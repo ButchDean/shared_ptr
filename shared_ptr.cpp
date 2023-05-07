@@ -37,26 +37,26 @@ void custom_deleter(Base *ptr) {
 
 int main() 
 {
-    // Creating a shared_ptr and initializing it with a new object
+    std::cout << "Creating a shared_ptr and initializing it with a new object\n";
     std::shared_ptr<Base> sp1 = std::make_shared<Base>();
     sp1->speak();
 
-    // Creating a shared_ptr with a custom deleter
+    std::cout << "Creating a shared_ptr with a custom deleter\n";
     std::shared_ptr<Base> sp2(new Derived, custom_deleter);
     sp2->speak();
 
-    // Creating a shared_ptr from another shared_ptr (copying)
+    std::cout << "Creating a shared_ptr from another shared_ptr (copying)\n";
     std::shared_ptr<Base> sp3 = sp1;
     sp3->speak();
 
-    // Resetting a shared_ptr
+    std::cout << "Resetting a shared_ptr\n";
     sp3.reset(new Derived);
     sp3->speak();
 
-    // Checking the use_count of a shared_ptr
+    std::cout << "Checking the use_count of a shared_ptr\n";
     std::cout << "sp1 use_count: " << sp1.use_count() << std::endl;
 
-    // Using shared_ptr in a container
+    std::cout << "Using shared_ptr in a container\n";
     std::vector<std::shared_ptr<Base>> container;
     container.push_back(sp1);
     container.push_back(sp2);
@@ -78,7 +78,9 @@ int main()
 
 void AdvancedSharedPtr() 
 {
-    // 1. Weak pointers
+    std::cout << "AdvancedSharedPtr()\n";
+
+    std::cout << "1. Weak pointers\n";
     std::shared_ptr<Base> sp1 = std::make_shared<Base>();
     std::weak_ptr<Base> wp1 = sp1;
 
@@ -92,19 +94,19 @@ void AdvancedSharedPtr()
         std::cout << "The weak_ptr is expired." << std::endl;
     }
 
-    // 2. Aliasing constructor
+    std::cout << "2. Aliasing constructor\n";
     std::shared_ptr<Base> sp2 = std::make_shared<Base>();
     std::shared_ptr<Base> sp2_alias(sp2, sp2.get());
     sp2_alias->speak();
     std::cout << "sp2 use_count: " << sp2.use_count() << std::endl;
 
-    // 3. shared_ptr for arrays
+    std::cout << "3. shared_ptr for arrays\n";
     std::shared_ptr<Base[]> sp3(new Base[3]);
     sp3[0].speak();
     sp3[1].speak();
     sp3[2].speak();
 
-    // 4. Atomic operations
+    std::cout << "4. Atomic operations\n";
     std::shared_ptr<Base> sp4 = std::make_shared<Base>();
     std::shared_ptr<Base> sp5;
 
@@ -136,7 +138,7 @@ void file_deleter(FILE *file) {
 }
 
 void readFile(const char *filename) {
-    // Create a shared_ptr with a custom deleter
+    std::cout << "Create a shared_ptr with a custom deleter\n";
     std::shared_ptr<FILE> file(fopen(filename, "r"), file_deleter);
 
     if (!file) {
@@ -164,13 +166,15 @@ void FileExample()
 
 void WeakPtrDemo() 
 {
-    // Create a shared_ptr and initialize it with a new object
+    std::cout << "WeakPtrDemo()\n";
+
+    std::cout << "Create a shared_ptr and initialize it with a new object\n";
     std::shared_ptr<Base> sp1 = std::make_shared<Derived>();
 
-    // Create a weak_ptr from the shared_ptr
+    std::cout << "Create a weak_ptr from the shared_ptr\n";
     std::weak_ptr<Base> wp1(sp1);
 
-    // Check if the weak_ptr is valid and lock it to obtain a shared_ptr
+    std::cout << "Check if the weak_ptr is valid and lock it to obtain a shared_ptr\n";
     if (auto locked = wp1.lock()) {
         std::cout << "Weak pointer is valid. Locked and obtained shared_ptr." << std::endl;
         locked->speak();
@@ -178,10 +182,10 @@ void WeakPtrDemo()
         std::cout << "Weak pointer is not valid." << std::endl;
     }
 
-    // Reset the shared_ptr, causing the object to be destroyed
+    std::cout << "Reset the shared_ptr, causing the object to be destroyed\n";
     sp1.reset();
 
-    // Check if the weak_ptr is still valid
+    std::cout << "Check if the weak_ptr is still valid\n";
     if (wp1.expired()) {
         std::cout << "Weak pointer is now expired." << std::endl;
     } else {
